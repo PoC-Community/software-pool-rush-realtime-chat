@@ -7,7 +7,6 @@ function App() {
     <Center mt="160px">
 		<VStack spacing="32px">
 			<Routes />
-			{/* <Welcome /> */}
 		</VStack>
 	</Center>
   );

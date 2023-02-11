@@ -1,4 +1,6 @@
-import { Button, Center, Image, Link, Stack, Text, VStack } from '@chakra-ui/react';
+import { Button, Center, Image, Stack, Text, VStack } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+
 
 const Welcome = (): JSX.Element => (
 	<Center mt="-90px">
@@ -8,14 +10,16 @@ const Welcome = (): JSX.Element => (
 				Join Katsapp to chat with your friends all around the world !
 			</Text>
 			<Stack direction='column' spacing={4} >
-				<Button size='lg' borderWidth='4px' colorScheme='green' variant='outline' style={{borderRadius: 60}} >
-					<Link>Log In</Link>
+				<Button as={Link} to={'/login'} size='lg' borderWidth='4px' colorScheme='green' variant='outline' style={{borderRadius: 60}} >
+					Log In
 				</Button>
-				<Button colorScheme='green' style={{borderRadius: 60}} width='350px' size='lg'>
+				<Button as={Link} to={'/signup'} colorScheme='green' style={{borderRadius: 60}} width='350px' size='lg'>
 					Sign Up
 				</Button>
 			</Stack>
-				<Link fontSize='xs' color='orange.500' >About Us</Link>
+			<Text _hover={{textDecoration: "underline"}} as={Link} to={'/aboutus'} fontSize='md' color='orange.500' >
+				About us
+			</Text>
 		</VStack>
 	</Center>
 );

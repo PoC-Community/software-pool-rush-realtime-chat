@@ -1,4 +1,5 @@
-import { Button, Image, Center, FormControl, FormLabel, Link, Input, Text, VStack } from '@chakra-ui/react';
+import { Button, Image, Center, Text, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 const SignUp = (): JSX.Element => (
 	<Center mt="-50px">
@@ -24,9 +25,9 @@ const SignUp = (): JSX.Element => (
 			</Button>
 			<Text>
 				Don't have an account ? {' '}
-				<Link color='orange.400' href='#'>
-					Register Here !
-				</Link>
+				<Text as={Link} to={'/login'} _hover={{textDecoration: "underline"}} fontSize='md' color='orange.500' >
+				Register here !
+				</Text>
 			</Text>
 		</VStack>
 	</Center>
