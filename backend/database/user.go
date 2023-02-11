@@ -83,3 +83,12 @@ func (d Database) GetFriends(userId uuid.UUID) ([]*ent.User, error) {
 		Where(user.HasFriendsWith(user.ID(userId))).
 		All(d.CTX)
 }
+
+func (d Database) HasFriend(userId uuid.UUID, friendId uuid.UUID) (bool, error) {
+	return d.Client.User.
+		Query().
+		Where(user.ID(userId)).
+		QueryFriends().
+		Where(user.ID(friendId)).
+		Exist(d.CTX)
+}

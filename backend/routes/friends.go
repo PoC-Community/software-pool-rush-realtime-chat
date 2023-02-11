@@ -42,6 +42,11 @@ func addFriend(c *gin.Context) {
 		return
 	}
 
+	if data.Username == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
 	friend, err := database.DB.GetUserByUsername(data.Username)
 
 	if err != nil {
@@ -69,6 +74,11 @@ func deleteFriend(c *gin.Context) {
 	}{}
 
 	if err := c.ShouldBindJSON(&data); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	if data.Username == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 		return
 	}

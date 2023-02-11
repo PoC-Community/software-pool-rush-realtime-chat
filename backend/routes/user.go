@@ -27,6 +27,11 @@ func updateUser(c *gin.Context) {
 		return
 	}
 
+	if data.NewUsername == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
 	user, err := controllers.UpdateUser(user.ID, data.NewUsername)
 
 	if err != nil {

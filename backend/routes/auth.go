@@ -21,6 +21,11 @@ func registerUser(c *gin.Context) {
 		return
 	}
 
+	if data.Username == "" || data.Email == "" || data.Password == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
 	user, err := controllers.RegisterUser(data.Username, data.Email, data.Password)
 
 	if err != nil {
@@ -48,6 +53,11 @@ func loginUser(c *gin.Context) {
 	}{}
 
 	if err := c.ShouldBindJSON(&data); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	if data.Login == "" || data.Password == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 		return
 	}

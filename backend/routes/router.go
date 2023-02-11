@@ -9,4 +9,5 @@ func ApplyRoutes(r *gin.Engine) {
 	applyAuth(r)
 	applyUser(r)
 	ApplyFriends(r)
+	ApplyRooms(r)
 }

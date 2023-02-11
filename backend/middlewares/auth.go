@@ -14,26 +14,22 @@ func AuthRequired() gin.HandlerFunc {
 		token := c.GetHeader("Authorization")
 
 		if token == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"message": "Unauthorized",
-			})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
 			return
 		}
 
 		claims, err := jwt.VerifyToken(token)
 
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"message": "Unauthorized",
-			})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+			return
 		}
 
 		user, err := database.DB.GetUserByEmail(claims.Email)
 
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"message": "Unauthorized",
-			})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+			return
 		}
 
 		c.Set("user", user)
@@ -57,9 +53,7 @@ func NotAuthed() gin.HandlerFunc {
 			return
 		}
 
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"message": "Unauthorized",
-		})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
 	}
 }
 

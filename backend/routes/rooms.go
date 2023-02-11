@@ -16,7 +16,14 @@ func getRooms(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"rooms": user.Edges.Rooms})
+	rooms, err := controllers.GetRooms(user.ID)
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"rooms": rooms})
 }
 
 func createRoom(c *gin.Context) {
@@ -31,6 +38,16 @@ func createRoom(c *gin.Context) {
 	}{}
 
 	if err := c.ShouldBindJSON(&data); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	if data.Name == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	if data.Name == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 		return
 	}
@@ -57,6 +74,11 @@ func deleteRoom(c *gin.Context) {
 	}{}
 
 	if err := c.ShouldBindJSON(&data); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	if data.ID == uuid.Nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 		return
 	}

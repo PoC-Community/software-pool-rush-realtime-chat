@@ -24,6 +24,11 @@ func search(c *gin.Context) {
 		return
 	}
 
+	if data.Username == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
 	users, err := controllers.SearchUser(data.Username)
 
 	if err != nil {

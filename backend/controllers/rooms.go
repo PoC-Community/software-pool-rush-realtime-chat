@@ -14,3 +14,7 @@ func CreateRoom(name string, userId uuid.UUID) (*ent.Room, error) {
 func DeleteRoom(id uuid.UUID) error {
 	return database.DB.DeleteRoom(id)
 }
+
+func GetRooms(userId uuid.UUID) ([]*ent.Room, error) {
+	return database.DB.GetRoomsFromUser(userId)
+}
