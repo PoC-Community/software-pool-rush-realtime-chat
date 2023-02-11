@@ -3,7 +3,6 @@ package routes
 import (
 	"katsapp_backend/controllers"
 	"katsapp_backend/ent"
-	"katsapp_backend/jwt"
 	"katsapp_backend/middlewares"
 	"net/http"
 
@@ -19,21 +18,23 @@ func updateUser(c *gin.Context) {
 	}
 	user := temp.(*ent.User)
 
-	var data jwt.UpdateUser
+	data := struct {
+		NewUsername string `json:"newUsername"`
+	}{}
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 		return
 	}
 
-	user, err := controllers.UpdateUser(user.ID, data.Username)
+	user, err := controllers.UpdateUser(user.ID, data.NewUsername)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.AbortWithStatusJSON(http.StatusOK, gin.H{"user": user})
+	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
 func applyUser(r *gin.Engine) {

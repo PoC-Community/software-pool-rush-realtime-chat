@@ -7,4 +7,6 @@ import (
 func ApplyRoutes(r *gin.Engine) {
 	applyHealth(r)
 	applyAuth(r)
+	applyUser(r)
+	ApplyFriends(r)
 }

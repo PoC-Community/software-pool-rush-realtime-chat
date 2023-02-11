@@ -10,6 +10,7 @@ import (
 	"entgo.io/ent/dialect"
 	entsql "entgo.io/ent/dialect/sql"
 	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/joho/godotenv"
 )
 
 type Database struct {
@@ -21,6 +22,7 @@ type Database struct {
 var DB *Database
 
 func init() {
+	godotenv.Load()
 	url := os.Getenv("DB_URL")
 	db, err := sql.Open("pgx", url)
 
@@ -39,5 +41,6 @@ func init() {
 	DB = &Database{
 		Client: client,
 		URL:    url,
+		CTX:    context.Background(),
 	}
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func health(c *gin.Context) {
-	c.AbortWithStatus(http.StatusOK)
+	c.String(http.StatusOK, "OK")
 }
 
 func applyHealth(r *gin.Engine) {

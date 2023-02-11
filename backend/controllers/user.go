@@ -11,18 +11,12 @@ import (
 )
 
 func RegisterUser(username, email, password string) (*ent.User, error) {
-	user, err := database.DB.GetUserByEmail(email)
-	if err != nil {
-		return nil, err
-	}
+	user, _ := database.DB.GetUserByEmail(email)
 	if user != nil {
 		return nil, errors.New("Email already exists")
 	}
 
-	user, err = database.DB.GetUserByUsername(username)
-	if err != nil {
-		return nil, err
-	}
+	user, _ = database.DB.GetUserByUsername(username)
 	if user != nil {
 		return nil, errors.New("Username already exists")
 	}
@@ -35,7 +29,7 @@ func RegisterUser(username, email, password string) (*ent.User, error) {
 		return nil, errors.New("Username is too short (minimum is 6 characters)")
 	}
 
-	if _, err = mail.ParseAddress(email); err != nil {
+	if _, err := mail.ParseAddress(email); err != nil {
 		return nil, errors.New("Invalid email address")
 	}
 
@@ -49,30 +43,21 @@ func RegisterUser(username, email, password string) (*ent.User, error) {
 }
 
 func LoginUser(login, password string) (*ent.User, error) {
-	user, err := database.DB.GetUserByEmail(login)
-	if err != nil {
-		return nil, err
-	}
-	if user != nil {
+	if user, _ := database.DB.GetUserByEmail(login); user != nil {
 		if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
-			return nil, errors.New("Invalid password")
+			return nil, errors.New("Invalid username or password")
 		}
 		return user, nil
 	}
 
-	user, err = database.DB.GetUserByUsername(login)
-	if err != nil {
-		return nil, err
-	}
-
-	if user != nil {
+	if user, _ := database.DB.GetUserByUsername(login); user != nil {
 		if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
-			return nil, errors.New("Invalid password")
+			return nil, errors.New("Invalid username or password")
 		}
 		return user, nil
 	}
 
-	return nil, errors.New("User not found")
+	return nil, errors.New("Invalid username or password")
 }
 
 func IsUserRegistered(email string) bool {

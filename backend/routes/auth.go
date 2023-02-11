@@ -2,7 +2,6 @@ package routes
 
 import (
 	"katsapp_backend/controllers"
-	"katsapp_backend/ent"
 	"katsapp_backend/jwt"
 	"katsapp_backend/middlewares"
 	"net/http"
@@ -11,7 +10,11 @@ import (
 )
 
 func registerUser(c *gin.Context) {
-	var data jwt.AuthRegister
+	data := struct {
+		Username string `json:"username"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}{}
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
@@ -39,7 +42,10 @@ func registerUser(c *gin.Context) {
 }
 
 func loginUser(c *gin.Context) {
-	var data jwt.AuthLogin
+	data := struct {
+		Login    string `json:"login"`
+		Password string `json:"password"`
+	}{}
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
@@ -60,25 +66,17 @@ func loginUser(c *gin.Context) {
 		return
 	}
 
-	c.AbortWithStatusJSON(http.StatusOK, gin.H{
-		"accessToken": accessToken,
-		"user":        user,
-	})
+	c.JSON(http.StatusOK, gin.H{"accessToken": accessToken, "user": user})
 }
 
 func userInfo(c *gin.Context) {
-	temp, ok := c.Get("user")
+	user := middlewares.GetUser(c)
 
-	if !ok {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+	if user == nil {
 		return
 	}
 
-	user := temp.(*ent.User)
-
-	c.AbortWithStatusJSON(http.StatusOK, gin.H{
-		"user": user,
-	})
+	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
 func applyAuth(r *gin.Engine) {

@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"katsapp_backend/database"
+	"katsapp_backend/ent"
 	"katsapp_backend/jwt"
 	"net/http"
 
@@ -60,4 +61,17 @@ func NotAuthed() gin.HandlerFunc {
 			"message": "Unauthorized",
 		})
 	}
+}
+
+func GetUser(c *gin.Context) *ent.User {
+	temp, ok := c.Get("user")
+
+	if !ok {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return nil
+	}
+
+	user := temp.(*ent.User)
+
+	return user
 }

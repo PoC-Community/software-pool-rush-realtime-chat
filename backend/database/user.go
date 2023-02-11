@@ -69,3 +69,17 @@ func (d Database) RemoveFriend(userId uuid.UUID, friendId uuid.UUID) (*ent.User,
 		RemoveFriendIDs(friendId).
 		Save(d.CTX)
 }
+
+func (d Database) SearchUser(username string) ([]*ent.User, error) {
+	return d.Client.User.
+		Query().
+		Where(user.UsernameContains(username)).
+		All(d.CTX)
+}
+
+func (d Database) GetFriends(userId uuid.UUID) ([]*ent.User, error) {
+	return d.Client.User.
+		Query().
+		Where(user.HasFriendsWith(user.ID(userId))).
+		All(d.CTX)
+}
