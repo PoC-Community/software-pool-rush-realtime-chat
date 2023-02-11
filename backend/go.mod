@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	entgo.io/ent v0.11.7
+	github.com/dustin/go-broadcast v0.0.0-20211018055107-71439988bd91
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.8.2
 	github.com/golang-jwt/jwt v3.2.2+incompatible
