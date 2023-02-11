@@ -36,14 +36,11 @@ func registerUser(c *gin.Context) {
 	accessToken, err := jwt.CreateToken(user.Email)
 
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 		return
 	}
 
-	c.AbortWithStatusJSON(http.StatusOK, gin.H{
-		"accessToken": accessToken,
-		"user":        user,
-	})
+	c.JSON(http.StatusOK, gin.H{"accessToken": accessToken, "user": user})
 }
 
 func loginUser(c *gin.Context) {

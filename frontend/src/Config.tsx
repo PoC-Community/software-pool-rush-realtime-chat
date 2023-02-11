@@ -1,5 +1,4 @@
+import axios from "axios";
 import { get } from "env-var";
 
-const env = (name: string, required = true) => get(name).required(required);
-
-export const API_URL = env("REACT_APP_API_URL").asString();
+export const API_URL = get("REACT_APP_API_URL").required(true).asString();

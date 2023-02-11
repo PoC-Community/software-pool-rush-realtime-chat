@@ -1,42 +1,43 @@
 import {
   Button,
+  Image,
+  Text,
   FormControl,
   FormLabel,
   Input,
   VStack,
-  Text,
-  Image,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useEffect } from "react";
 import { useContext, useReducer, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "src/context/auth";
-
 import Auth from "src/types/Auth";
 import ServerError from "src/types/ServerError";
 import { server } from "src/utils/server";
 
 type Data = {
-  login: string;
+  email: string;
+  username: string;
   password: string;
 };
 
-const Login = (): JSX.Element => {
+const Register = (): JSX.Element => {
   const [data, setData] = useReducer(
     (prev: Data, next: Partial<Data>) => ({ ...prev, ...next }),
-    { login: "", password: "" }
+    { username: "", email: "", password: "" }
   );
   const [error, setError] = useState("");
-  const { setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const submit = async () => {
-    if (!data.login || !data.password) {
+    if (!data.username || !data.email || !data.password) {
       return setError("Please fill all fields");
     }
 
     try {
-      const res = await server.post<Partial<Auth>>("/auth/login", data);
+      const res = await server.post<Partial<Auth>>("/auth/register", data);
 
       if (res.data.accessToken && res.data.user) {
         setAuth({ ...res.data, isAuthed: true });
@@ -51,20 +52,34 @@ const Login = (): JSX.Element => {
     }
   };
 
+  useEffect(() => {
+    if (auth.isAuthed) navigate("/home");
+  }, [auth]);
+
   return (
     <VStack spacing="8">
-      <Image w="60" src="assets/logo.png" alt="Logo-Katsapp" />
+      <Image boxSize="60" src="assets/logo.png" alt="Logo-Katsapp" />
+
       <Text fontSize="3xl" color="orange.400" fontWeight="bold">
-        So happy to see you again :D
+        Welcome among us :D
       </Text>
 
       <VStack spacing="4" w="96">
         <FormControl>
-          <FormLabel color="green.700">Email or Username</FormLabel>
+          <FormLabel color="green.700">Email address</FormLabel>
           <Input
-            placeholder="Email/username"
-            value={data.login}
-            onChange={(e) => setData({ login: e.target.value })}
+            placeholder="Email"
+            value={data.email}
+            onChange={(e) => setData({ email: e.target.value })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel color="green.700">Username</FormLabel>
+          <Input
+            placeholder="Username"
+            value={data.username}
+            type="text"
+            onChange={(e) => setData({ username: e.target.value })}
           />
         </FormControl>
         <FormControl>
@@ -72,6 +87,7 @@ const Login = (): JSX.Element => {
           <Input
             placeholder="Password"
             value={data.password}
+            type="password"
             onChange={(e) => setData({ password: e.target.value })}
           />
         </FormControl>
@@ -84,23 +100,23 @@ const Login = (): JSX.Element => {
       )}
 
       <Button onClick={submit} colorScheme="orange" size="lg">
-        Log In
+        Register
       </Button>
 
       <Text>
-        Don't have an account yet ?{" "}
+        Already got an account ?{" "}
         <Button
           as={Link}
-          to={"/register"}
+          to={"/login"}
           variant="link"
-          fontSize="md"
           color="orange.500"
+          fontSize="md"
         >
-          Register here !
+          Login here !
         </Button>
       </Text>
     </VStack>
   );
 };
 
-export default Login;
+export default Register;
