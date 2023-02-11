@@ -16,7 +16,7 @@ const Login = (): JSX.Element => (
 		  <FormLabel color="green.700">Password</FormLabel>
 			<Input placeholder="Password" />
 		</FormControl>
-			<Button colorScheme="orange" size="lg">
+			<Button as={Link} to={'/home'} colorScheme="orange" size="lg">
 				Log In
 			</Button>
 			<Text>

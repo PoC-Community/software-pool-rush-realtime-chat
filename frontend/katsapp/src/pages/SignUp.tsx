@@ -20,7 +20,7 @@ const SignUp = (): JSX.Element => (
 		  <FormLabel color="green.700">Confirm Password</FormLabel>
 			<Input placeholder="Confirm password" />
 		</FormControl>
-			<Button colorScheme="orange" size="lg">
+			<Button as={Link} to={'/home'} colorScheme="orange" size="lg">
 				Register
 			</Button>
 		</VStack>
