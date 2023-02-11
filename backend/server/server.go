@@ -2,6 +2,8 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+
+	"github.com/gin-contrib/cors"
 )
 
 type Server struct {
@@ -10,8 +12,16 @@ type Server struct {
 }
 
 func NewServer() *Server {
+	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"POST", "GET", "DELETE", "PUT", "PATCH"},
+		AllowHeaders: []string{"*"},
+	}))
+
 	return &Server{
-		Router: gin.Default(),
+		Router: router,
 		Config: Config,
 	}
 }
