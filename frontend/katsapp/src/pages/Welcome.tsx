@@ -9,7 +9,7 @@ const Welcome = (): JSX.Element => (
 			</Text>
 			<Stack direction='column' spacing={4} >
 				<Button size='lg' borderWidth='4px' colorScheme='green' variant='outline' style={{borderRadius: 60}} >
-					Log In
+					<Link>Log In</Link>
 				</Button>
 				<Button colorScheme='green' style={{borderRadius: 60}} width='350px' size='lg'>
 					Sign Up
