@@ -1,7 +1,6 @@
 import { Button, Center, Image, Stack, Text, VStack } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
-
 const Welcome = (): JSX.Element => (
 	<Center mt="-90px">
 		<VStack spacing="50px">

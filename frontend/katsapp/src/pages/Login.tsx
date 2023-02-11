@@ -1,4 +1,5 @@
 import { Button, Center, FormControl, FormLabel, Input, VStack, Text, Image } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 const Login = (): JSX.Element => (
 	<Center mt="-50px">
@@ -16,8 +17,14 @@ const Login = (): JSX.Element => (
 			<Input placeholder="Password" />
 		</FormControl>
 			<Button colorScheme="orange" size="lg">
-				Validate
+				Log In
 			</Button>
+			<Text>
+				Don't have an account ? {' '}
+				<Text as={Link} to={'/signup'} _hover={{textDecoration: "underline"}} fontSize='md' color='orange.500' >
+				Register here !
+				</Text>
+			</Text>
 		</VStack>
 	</Center>
 );

@@ -21,14 +21,8 @@ const SignUp = (): JSX.Element => (
 			<Input placeholder="Confirm password" />
 		</FormControl>
 			<Button colorScheme="orange" size="lg">
-				Validate
+				Register
 			</Button>
-			<Text>
-				Don't have an account ? {' '}
-				<Text as={Link} to={'/login'} _hover={{textDecoration: "underline"}} fontSize='md' color='orange.500' >
-				Register here !
-				</Text>
-			</Text>
 		</VStack>
 	</Center>
 );
