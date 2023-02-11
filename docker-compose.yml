@@ -9,8 +9,8 @@ services:
   #   networks:
   #     - front-tier
 
-  backend_crud:
-    image: katsapp_backend_crud
+  backend:
+    image: katsapp_backend
     networks:
       - back-tier
       - front-tier
@@ -18,20 +18,8 @@ services:
       - database
     ports:
       - "8080:8080"
-    env_file: ./backend/crud/.env
-    build: ./backend/crud
-
-  backend_realtime:
-    image: katsapp_backend_realtime
-    networks:
-      - back-tier
-      - front-tier
-    depends_on:
-      - backend_crud
-    ports:
-      - "8081:8081"
-    env_file: ./backend/realtime/.env
-    build: ./backend/realtime
+    env_file: ./backend/.env
+    build: ./backend
 
   database:
     image: postgres
