@@ -9,8 +9,8 @@ const Login = (): JSX.Element => (
 				So happy to see you again :D
 			</Text>
 			<FormControl>
-		  <FormLabel color="green.700">Email address</FormLabel>
-			<Input placeholder="Email" />
+		  <FormLabel color="green.700">Email or Username</FormLabel>
+			<Input placeholder="Email/username" />
 			</FormControl>
 			<FormControl>
 		  <FormLabel color="green.700">Password</FormLabel>

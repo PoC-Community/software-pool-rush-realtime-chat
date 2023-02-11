@@ -13,12 +13,12 @@ const SignUp = (): JSX.Element => (
 			<Input placeholder="Email" />
 			</FormControl>
 			<FormControl>
-		  <FormLabel color="green.700">Password</FormLabel>
-			<Input placeholder="Password" />
+		  <FormLabel color="green.700">Username</FormLabel>
+			<Input placeholder="Username" />
 			</FormControl>
 			<FormControl>
-		  <FormLabel color="green.700">Confirm Password</FormLabel>
-			<Input placeholder="Confirm password" />
+		  <FormLabel color="green.700">Password</FormLabel>
+			<Input placeholder="Password" />
 		</FormControl>
 			<Button as={Link} to={'/home'} colorScheme="orange" size="lg">
 				Register
