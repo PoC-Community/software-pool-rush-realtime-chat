@@ -164,11 +164,16 @@ type Response = {
 ```
 
 ### 6.4. Delete room
-Endpoint: `/rooms/:id`  
+Endpoint: `/rooms`  
 Method: `DELETE`  
 Description: Delete room  
 Headers: `Authorization: Bearer token`  
-
+Request body:
+```ts
+type Request = {
+    id: string,
+}
+```
 
 ### 6.5. Add user to room
 Endpoint: `/rooms/:id`  
