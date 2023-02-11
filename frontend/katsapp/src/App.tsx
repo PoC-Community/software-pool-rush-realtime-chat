@@ -1,11 +1,13 @@
 import { Center, VStack } from '@chakra-ui/react';
-import Home from './pages/Home';
+// import Welcome from './pages/Welcome';
+import { default as Routes } from './Routes';
 
 function App() {
   return (
     <Center mt="160px">
 		<VStack spacing="32px">
-			<Home />
+			<Routes />
+			{/* <Welcome /> */}
 		</VStack>
 	</Center>
   );
