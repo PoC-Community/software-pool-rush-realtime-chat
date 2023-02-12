@@ -1,4 +1,4 @@
-import { Spinner, Text,  VStack } from "@chakra-ui/react";
+import { Spinner, Text, VStack } from "@chakra-ui/react";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,7 +11,7 @@ import Message from "src/types/Message";
 import { server } from "src/utils/server";
 
 const Room = (): JSX.Element => {
-  const room = useParams<{ id: string, name: string }>();
+  const room = useParams<{ id: string; name: string }>();
   const ctrlRef = useRef<AbortController>();
   const [messages, setMessages] = useState<Message[]>([]);
   const { auth } = useContext(AuthContext);
@@ -66,11 +66,15 @@ const Room = (): JSX.Element => {
 
   return (
     <VStack spacing="6">
-      <Text fontSize='2xl'>
-        {room.name}
-      </Text>
+      <Text fontSize="2xl">{room.name}</Text>
 
-      <MessageList messages={messages} user_id={auth.user?.id} />
+      <MessageList
+        onRemove={(id) =>
+          setMessages((prev) => prev.filter((message) => message.id !== id))
+        }
+        messages={messages}
+        user_id={auth.user?.id}
+      />
 
       <MessageInput roomId={room.id} />
     </VStack>

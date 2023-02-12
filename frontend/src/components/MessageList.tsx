@@ -16,6 +16,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 import MessageType from "src/types/Message";
+import { server } from "src/utils/server";
 
 const isLink = (text: string) => {
   let regex = new RegExp(
@@ -71,13 +72,22 @@ const AlertExternalLink = ({
 const MessageList = ({
   messages,
   user_id,
+  onRemove,
 }: {
   messages: MessageType[];
   user_id: string;
+  onRemove: (_: string) => void;
 }): JSX.Element => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [url, setUrl] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const deleteMessage = (id: string) => {
+    server
+      .delete(`/message/${id}`)
+      .then((r) => r.status === 200 && onRemove(id))
+      .catch((e) => console.log(e));
+  };
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "auto" });
@@ -145,7 +155,7 @@ const MessageList = ({
                     colorScheme="black"
                     variant="link"
                     size="sm"
-                    onClick={() => console.log("1")}
+                    onClick={() => deleteMessage(message.id)}
                   >
                     Delete
                   </Button>

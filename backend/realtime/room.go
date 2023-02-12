@@ -20,6 +20,7 @@ func ApplyRealtime(r *gin.Engine) {
 	r.PUT("/room/:roomid", middlewares.AuthRequired(), middlewares.IsUserInRoom(), addFriendToRoom)
 	r.DELETE("/room/:roomid", middlewares.AuthRequired(), middlewares.IsUserInRoom(), deleteRoom)
 	r.GET("/stream/:roomid", middlewares.AuthRequired(), middlewares.IsUserInRoom(), stream)
+	r.DELETE("/message/:messageid", middlewares.AuthRequired(), middlewares.IsUserInRoom(), deleteMessage)
 }
 
 func stream(c *gin.Context) {
@@ -37,6 +38,31 @@ func stream(c *gin.Context) {
 			return true
 		}
 	})
+}
+
+func deleteMessage(c *gin.Context) {
+	messageid := c.Param("messageid")
+
+	if messageid == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	messageID, err := uuid.Parse(messageid)
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	err = database.DB.DeleteMessage(messageID)
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	c.Status(http.StatusOK)
 }
 
 func addFriendToRoom(c *gin.Context) {
