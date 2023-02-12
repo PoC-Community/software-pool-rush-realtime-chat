@@ -55,7 +55,7 @@ const Profile = () => {
             type="text"
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key == "Enter") saveUser();
+              if (e.key === "Enter") saveUser();
             }}
           />
         </FormControl>

@@ -18,7 +18,7 @@ const Friends = (): JSX.Element => {
         data: { username: friendName },
       })
       .then((res) => {
-        if (res.status != 200) return;
+        if (res.status !== 200) return;
         loadFriends();
       })
       .catch((e) => console.log(e));
@@ -30,7 +30,7 @@ const Friends = (): JSX.Element => {
         headers: { Authorization: `Bearer ${auth.accessToken}` },
       })
       .then((res) => {
-        if (res.status != 200) return;
+        if (res.status !== 200) return;
         setFriends(res.data.friends);
       })
       .catch((e) => console.log(e));

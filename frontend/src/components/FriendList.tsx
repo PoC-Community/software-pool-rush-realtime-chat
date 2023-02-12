@@ -37,7 +37,7 @@ const FriendList = ({
             >
               <HStack>
                 <Avatar mr="4" name={friend.username} />
-                <Text>{friend.username}</Text>
+                <Text wordBreak="break-all">{friend.username}</Text>
               </HStack>
               <Popover>
                 <PopoverTrigger>

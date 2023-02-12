@@ -9,7 +9,7 @@ const MessageInput = ({ roomId }: { roomId: string }): JSX.Element => {
   const { auth } = useContext(AuthContext);
 
   const sendMessage = async () => {
-    if (message == "") return;
+    if (message === "") return;
 
     server
       .post(
@@ -18,7 +18,7 @@ const MessageInput = ({ roomId }: { roomId: string }): JSX.Element => {
         { headers: { Authorization: `Bearer ${auth.accessToken}` } }
       )
       .then((res) => {
-        if (res.status != 200) return;
+        if (res.status !== 200) return;
         setMessage("");
       });
   };
@@ -33,7 +33,7 @@ const MessageInput = ({ roomId }: { roomId: string }): JSX.Element => {
           type="text"
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key == "Enter") sendMessage();
+            if (e.key === "Enter") sendMessage();
           }}
         />
       </FormControl>

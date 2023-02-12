@@ -28,7 +28,7 @@ const SearchFriends = ({ onAdd }: { onAdd: () => void }): JSX.Element => {
         { headers: { Authorization: `Bearer ${auth.accessToken}` } }
       )
       .then((res) => {
-        if (res.status != 200) return;
+        if (res.status !== 200) return;
         setUsers(res.data.users);
       })
       .catch((e) => console.log(e));
@@ -42,7 +42,7 @@ const SearchFriends = ({ onAdd }: { onAdd: () => void }): JSX.Element => {
         { headers: { Authorization: `Bearer ${auth.accessToken}` } }
       )
       .then((res) => {
-        if (res.status != 200) return;
+        if (res.status !== 200) return;
         onAdd();
         searchUser();
       })
@@ -82,7 +82,7 @@ const SearchFriends = ({ onAdd }: { onAdd: () => void }): JSX.Element => {
                 bgColor="green.50"
                 justifyContent="space-between"
               >
-                <Text>{user.username}</Text>
+                <Text wordBreak="break-all">{user.username}</Text>
                 <Button
                   onClick={() => addFriend(user.username)}
                   colorScheme="green"

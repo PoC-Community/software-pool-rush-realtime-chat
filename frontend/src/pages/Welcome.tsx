@@ -1,12 +1,4 @@
-import {
-  Button,
-  HStack,
-  Image,
-  Spacer,
-  Stack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Image, Text, VStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const Welcome = (): JSX.Element => (

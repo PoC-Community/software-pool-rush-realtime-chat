@@ -20,7 +20,7 @@ const Rooms = (): JSX.Element => {
         headers: { Authorization: `Bearer ${auth.accessToken}` },
       })
       .then((res) => {
-        if (res.status != 200) return;
+        if (res.status !== 200) return;
         setRooms(res.data.rooms);
       })
       .catch(() => {});
@@ -32,7 +32,7 @@ const Rooms = (): JSX.Element => {
       headers: { Authorization: `Bearer ${auth.accessToken}` },
     });
 
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
 
     setRooms((prev) => prev.filter((room) => room.id != roomId));
   };

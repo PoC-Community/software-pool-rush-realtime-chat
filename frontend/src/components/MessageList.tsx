@@ -149,17 +149,6 @@ const MessageList = ({
                 <Text fontSize="xs" color="gray.500">
                   {new Date(message.created_at).toLocaleString()}
                 </Text>
-
-                {message.user_id == user_id && (
-                  <Button
-                    colorScheme="black"
-                    variant="link"
-                    size="sm"
-                    onClick={() => deleteMessage(message.id)}
-                  >
-                    Delete
-                  </Button>
-                )}
               </HStack>
             </VStack>
           ))}
