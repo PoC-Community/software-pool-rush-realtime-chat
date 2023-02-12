@@ -7,8 +7,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: rm -rf frontend
-
       - name: deploy site via scp
         uses: appleboy/scp-action@master
         with:
