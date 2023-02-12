@@ -23,7 +23,7 @@ const Navbar = (): JSX.Element => {
       justifyContent="space-between"
       bgColor="green.50"
     >
-      <Text fontSize="2xl" color="green.600" fontWeight="bold">
+      <Text as={Link} to='/rooms' fontSize="2xl" color="green.600" fontWeight="bold">
         KatsApp
       </Text>
 

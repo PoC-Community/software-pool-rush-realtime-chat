@@ -1,15 +1,9 @@
 import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-  Text,
-  Image,
   Alert,
   AlertIcon,
-  AlertTitle,
-  useToast,
+  AlertTitle, Button,
+  FormControl,
+  FormLabel, Image, Input, Text, useToast, VStack
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useContext, useReducer, useState } from "react";
@@ -64,7 +58,9 @@ const Login = (): JSX.Element => {
 
   return (
     <VStack spacing="8" minH="100vh" justifyContent="center">
-      <Image w="60" src="assets/logo.png" alt="Logo-Katsapp" />
+      <Link to='/'>
+        <Image w="60" src="assets/logo.png" alt="Logo-Katsapp" />
+      </Link>
 
       <Text fontSize="3xl" color="orange.400" fontWeight="bold">
         So happy to see you again :D
@@ -78,6 +74,7 @@ const Login = (): JSX.Element => {
             value={data.login}
             type="text"
             onChange={(e) => setData({ login: e.target.value })}
+            autoFocus
           />
         </FormControl>
         <FormControl>

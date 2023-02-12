@@ -65,7 +65,9 @@ const Register = (): JSX.Element => {
 
   return (
     <VStack spacing="8" minH="100vh" justifyContent="center">
-      <Image boxSize="60" src="assets/logo.png" alt="Logo-Katsapp" />
+      <Link to='/'>
+        <Image boxSize="60" src="assets/logo.png" alt="Logo-Katsapp" />
+      </Link>
 
       <Text fontSize="3xl" color="orange.400" fontWeight="bold">
         Welcome among us :D
@@ -79,6 +81,7 @@ const Register = (): JSX.Element => {
             type="text"
             value={data.email}
             onChange={(e) => setData({ email: e.target.value })}
+            autoFocus
           />
         </FormControl>
         <FormControl>
