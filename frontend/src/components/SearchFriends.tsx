@@ -19,7 +19,7 @@ const SearchFriends = ({ onAdd }: { onAdd: () => void }): JSX.Element => {
   const { auth } = useContext(AuthContext);
 
   const searchUser = async () => {
-    if (search == "") return setUsers([]);
+    if (search === "") return setUsers([]);
 
     server
       .post<{ users: User[] }>(
@@ -61,7 +61,7 @@ const SearchFriends = ({ onAdd }: { onAdd: () => void }): JSX.Element => {
             autoFocus
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key == "Enter") searchUser();
+              if (e.key === "Enter") searchUser();
             }}
           />
         </FormControl>

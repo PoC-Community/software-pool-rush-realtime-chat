@@ -41,7 +41,7 @@ const AddRoom = ({ reload }: { reload: () => void }): JSX.Element => {
         { headers: { Authorization: `Bearer ${auth.accessToken}` } }
       );
 
-      if (res.status != 200) return setError("Something went wrong");
+      if (res.status !== 200) return setError("Something went wrong");
 
       toast({
         title: "Room created!",

@@ -37,7 +37,7 @@ const AddFriendToRoom = ({
         headers: { Authorization: `Bearer ${auth.accessToken}` },
       })
       .then((res) => {
-        if (res.status != 200) return;
+        if (res.status !== 200) return;
         setFriends(res.data.friends);
       });
   };
@@ -50,7 +50,7 @@ const AddFriendToRoom = ({
         { headers: { Authorization: `Bearer ${auth.accessToken}` } }
       )
       .then((res) => {
-        if (res.status != 200) return;
+        if (res.status !== 200) return;
         onClose();
         onAdd();
         setFriends([]);
@@ -77,7 +77,7 @@ const AddFriendToRoom = ({
             <VStack spacing="4">
               {friends.length > 0 &&
                 friends
-                  .filter((f) => !room.edges.users.find((u) => u.id == f.id))
+                  .filter((f) => !room.edges.users.find((u) => u.id === f.id))
                   .map((friend) => {
                     return (
                       <HStack

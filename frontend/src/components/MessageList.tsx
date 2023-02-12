@@ -110,12 +110,14 @@ const MessageList = ({
           messages.map((message) => (
             <VStack
               key={message.id}
-              alignSelf={message.user_id == user_id ? "flex-end" : "flex-start"}
+              alignSelf={
+                message.user_id === user_id ? "flex-end" : "flex-start"
+              }
               alignItems={
-                message.user_id == user_id ? "flex-end" : "flex-start"
+                message.user_id === user_id ? "flex-end" : "flex-start"
               }
             >
-              {message.user_id != user_id && (
+              {message.user_id !== user_id && (
                 <HStack>
                   <Avatar size="sm" name={message.edges.user.username} />
                   <Text fontSize="sm" color="gray.500">

@@ -1,4 +1,4 @@
-import { Flex, HStack, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import AddRoom from "src/components/AddRoom";
 import RoomList from "src/components/RoomList";
@@ -34,7 +34,7 @@ const Rooms = (): JSX.Element => {
 
     if (res.status !== 200) return;
 
-    setRooms((prev) => prev.filter((room) => room.id != roomId));
+    setRooms((prev) => prev.filter((room) => room.id !== roomId));
   };
 
   useEffect(() => {
@@ -45,7 +45,11 @@ const Rooms = (): JSX.Element => {
     <VStack spacing="10">
       <AddRoom reload={() => fetchRooms()} />
 
-      <RoomList rooms={rooms} reload={() => fetchRooms()} onLeave={(id) => leaveRoom(id)} />
+      <RoomList
+        rooms={rooms}
+        reload={() => fetchRooms()}
+        onLeave={(id) => leaveRoom(id)}
+      />
     </VStack>
   );
 };
