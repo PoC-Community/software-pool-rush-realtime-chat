@@ -37,7 +37,11 @@ const FriendList = ({
             >
               <HStack>
                 <Avatar mr="4" name={friend.username} />
-                <Text>{friend.username}</Text>
+                <Text
+                  overflow="hidden"
+                  whiteSpace='nowrap'
+                  textOverflow='ellipsis'
+                  width='110px'>{friend.username}</Text>
               </HStack>
               <Popover>
                 <PopoverTrigger>
