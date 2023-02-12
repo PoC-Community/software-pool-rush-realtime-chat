@@ -3,8 +3,10 @@ package realtime
 import (
 	"io"
 	"katsapp_backend/controllers"
+	"katsapp_backend/database"
 	"katsapp_backend/middlewares"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -13,10 +15,11 @@ import (
 var roomManager *Manager
 
 func ApplyRealtime(r *gin.Engine) {
-	r.GET("/room/:roomid", middlewares.AuthRequired(), getRoom)
+	r.GET("/room/:roomid", middlewares.AuthRequired(), middlewares.IsUserInRoom(), getRoom)
 	r.POST("/room/:roomid", middlewares.AuthRequired(), sendRoom)
-	r.DELETE("/room/:roomid", middlewares.AuthRequired(), deleteRoom)
-	r.GET("/stream/:roomid", middlewares.AuthRequired(), stream)
+	r.PUT("/room/:roomid", middlewares.AuthRequired(), middlewares.IsUserInRoom(), addFriendToRoom)
+	r.DELETE("/room/:roomid", middlewares.AuthRequired(), middlewares.IsUserInRoom(), deleteRoom)
+	r.GET("/stream/:roomid", middlewares.AuthRequired(), middlewares.IsUserInRoom(), stream)
 }
 
 func stream(c *gin.Context) {
@@ -30,17 +33,50 @@ func stream(c *gin.Context) {
 		case <-clientGone:
 			return false
 		case message := <-listener:
-			data := message.(*Message)
-
-			c.SSEvent("message", gin.H{
-				"id":       data.Id,
-				"username": data.Username,
-				"content":  data.Content,
-				"roomid":   data.RoomId,
-			})
+			c.SSEvent("message", message)
 			return true
 		}
 	})
+}
+
+func addFriendToRoom(c *gin.Context) {
+	user := middlewares.GetUser(c)
+
+	if user == nil {
+		return
+	}
+
+	roomid, err := uuid.Parse(c.Param("roomid"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	data := struct {
+		FriendID string `json:"friendId"`
+	}{}
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	friendid, err := uuid.Parse(data.FriendID)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	_, err = database.DB.AddUserToRoom(friendid, roomid)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	c.Status(http.StatusOK)
 }
 
 func getRoom(c *gin.Context) {
@@ -51,22 +87,15 @@ func getRoom(c *gin.Context) {
 		return
 	}
 
-	data := struct {
-		start int
-		end   int
-	}{}
+	start, err := strconv.Atoi(c.Query("start"))
+	end, err := strconv.Atoi(c.Query("end"))
 
-	if err := c.ShouldBindQuery(&data); err != nil {
+	if start < 0 || end < 0 || start > end || err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 		return
 	}
 
-	if data.start < 0 || data.end < 0 || data.start > data.end {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
-		return
-	}
-
-	messages, err := controllers.GetMessagesByRoomWithRange(roomid, data.start, data.end)
+	messages, err := controllers.GetMessagesByRoomWithRange(roomid, start, end)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
@@ -111,7 +140,7 @@ func sendRoom(c *gin.Context) {
 		return
 	}
 
-	roomManager.Submit(user.Username, message.ID.String(), roomid.String(), data.Message)
+	roomManager.Submit(message)
 	c.Status(http.StatusOK)
 }
 

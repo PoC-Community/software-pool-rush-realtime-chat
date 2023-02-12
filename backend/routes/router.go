@@ -12,5 +12,6 @@ func ApplyRoutes(r *gin.Engine) {
 	applyUser(r)
 	ApplyFriends(r)
 	ApplyRooms(r)
+	applySearch(r)
 	realtime.ApplyRealtime(r)
 }

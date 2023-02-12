@@ -1,15 +1,10 @@
 package realtime
 
 import (
+	"katsapp_backend/ent"
+
 	"github.com/dustin/go-broadcast"
 )
-
-type Message struct {
-	Id       string
-	Username string
-	RoomId   string
-	Content  string
-}
 
 type Listener struct {
 	RoomId string
@@ -21,7 +16,7 @@ type Manager struct {
 	open     chan *Listener
 	close    chan *Listener
 	delete   chan string
-	messages chan *Message
+	messages chan *ent.Message
 }
 
 func init() {
@@ -30,7 +25,7 @@ func init() {
 		open:     make(chan *Listener, 100),
 		close:    make(chan *Listener, 100),
 		delete:   make(chan string, 100),
-		messages: make(chan *Message, 100),
+		messages: make(chan *ent.Message, 100),
 	}
 
 	go roomManager.run()
@@ -46,7 +41,7 @@ func (m *Manager) run() {
 		case roomid := <-m.delete:
 			m.deleteBroadcast(roomid)
 		case message := <-m.messages:
-			m.room(message.RoomId).Submit(message)
+			m.room(message.RoomID.String()).Submit(message)
 		}
 	}
 }
@@ -97,12 +92,6 @@ func (m *Manager) DeleteBroadcast(roomid string) {
 	m.delete <- roomid
 }
 
-func (m *Manager) Submit(username, messageId, roomid, content string) {
-	msg := &Message{
-		Id:       messageId,
-		Username: username,
-		RoomId:   roomid,
-		Content:  content,
-	}
-	m.messages <- msg
+func (m *Manager) Submit(message *ent.Message) {
+	m.messages <- message
 }

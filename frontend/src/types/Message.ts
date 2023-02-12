@@ -1,8 +1,12 @@
+import User from "./User";
+
 type Message = {
-    content: string;
-    roomId: string;
-    username: string;
-    id: string;
-}
+  content: string;
+  created_at: string;
+  edges: { user: User };
+  room_id: string;
+  user_id: string;
+  id: string;
+};
 
 export default Message;

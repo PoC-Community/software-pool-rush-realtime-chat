@@ -21,9 +21,10 @@ const Rooms = (): JSX.Element => {
       })
       .then((res) => {
         if (res.status != 200) return;
+        console.log(res.data)
         setRooms(res.data.rooms);
       })
-      .catch((e) => {});
+      .catch(() => {});
   };
 
   const leaveRoom = async (roomId: string) => {

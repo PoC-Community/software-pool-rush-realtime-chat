@@ -81,3 +81,7 @@ func UpdateUser(id uuid.UUID, username string) (*ent.User, error) {
 
 	return database.DB.UpdateUser(id, username)
 }
+
+func IsUserInRoom(userId, roomId uuid.UUID) (bool, error) {
+	return database.DB.IsUserInRoom(userId, roomId)
+}

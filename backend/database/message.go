@@ -19,6 +19,7 @@ func (d Database) GetMessageById(id uuid.UUID) (*ent.Message, error) {
 	return d.Client.Message.
 		Query().
 		Where(message.ID(id)).
+		WithUser().
 		Only(d.CTX)
 }
 
@@ -58,5 +59,6 @@ func (d Database) GetMessageFromRoomWithRange(roomId uuid.UUID, start, end int) 
 		Order(ent.Desc(message.FieldCreatedAt)).
 		Offset(start).
 		Limit(end - start).
+		WithUser().
 		All(d.CTX)
 }

@@ -24,7 +24,7 @@ const MessageInput = ({ roomId }: { roomId: string }): JSX.Element => {
   };
 
   return (
-    <HStack w="60vw" position='fixed' >
+    <HStack w="60vw">
       <FormControl>
         <Input
           placeholder="Message"
@@ -37,7 +37,9 @@ const MessageInput = ({ roomId }: { roomId: string }): JSX.Element => {
           }}
         />
       </FormControl>
-      <Button onClick={() => sendMessage()}>Send</Button>
+      <Button onClick={() => sendMessage()} colorScheme="orange">
+        Send
+      </Button>
     </HStack>
   );
 };

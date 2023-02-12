@@ -29,7 +29,7 @@ func search(c *gin.Context) {
 		return
 	}
 
-	users, err := controllers.SearchUser(data.Username)
+	users, err := controllers.SearchUser(user.ID, data.Username)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -40,5 +40,5 @@ func search(c *gin.Context) {
 }
 
 func applySearch(r *gin.Engine) {
-	r.GET("/search", middlewares.AuthRequired(), search)
+	r.POST("/search", middlewares.AuthRequired(), search)
 }

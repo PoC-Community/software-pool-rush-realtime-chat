@@ -46,6 +46,7 @@ func (d Database) GetRoomsFromUser(userId uuid.UUID) ([]*ent.Room, error) {
 	return d.Client.Room.
 		Query().
 		Where(room.HasUsersWith(user.ID(userId))).
+		WithUsers().
 		All(d.CTX)
 }
 
@@ -54,4 +55,20 @@ func (d Database) RemoveUserFromRoom(userId, roomId uuid.UUID) (*ent.Room, error
 		UpdateOneID(roomId).
 		RemoveUserIDs(userId).
 		Save(d.CTX)
+}
+
+func (d Database) AddUserToRoom(userId, roomId uuid.UUID) (*ent.Room, error) {
+	return d.Client.Room.
+		UpdateOneID(roomId).
+		AddUserIDs(userId).
+		Save(d.CTX)
+}
+
+func (d Database) IsUserInRoom(userId, roomId uuid.UUID) (bool, error) {
+	return d.Client.Room.
+		Query().
+		Where(room.ID(roomId)).
+		QueryUsers().
+		Where(user.ID(userId)).
+		Exist(d.CTX)
 }

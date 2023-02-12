@@ -16,6 +16,7 @@ import {
 
 import Room from "src/types/Room";
 import { Link } from "react-router-dom";
+import AddFriendToRoom from "./AddFriendToRoom";
 
 const RoomList = ({
   rooms,
@@ -35,9 +36,10 @@ const RoomList = ({
               </Heading>
             </CardHeader>
             <CardFooter>
-              <Button as={Link} to={`/rooms/${room.id}`} variant="ghost" mr="2">
+              <Button as={Link} to={`/rooms/${room.id}`} variant="ghost">
                 <ChatIcon mr="2" /> Chat
               </Button>
+              <AddFriendToRoom room={room} />
               <Popover>
                 <PopoverTrigger>
                   <Button colorScheme="red" variant="ghost">

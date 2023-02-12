@@ -70,10 +70,14 @@ func (d Database) RemoveFriend(userId uuid.UUID, friendId uuid.UUID) (*ent.User,
 		Save(d.CTX)
 }
 
-func (d Database) SearchUser(username string) ([]*ent.User, error) {
+func (d Database) SearchUser(userid uuid.UUID, username string) ([]*ent.User, error) {
 	return d.Client.User.
 		Query().
-		Where(user.UsernameContains(username)).
+		Where(user.And(
+			user.UsernameContains(username)),
+			user.IDNEQ(userid),
+			user.Not(user.HasFriendsWith(user.ID(userid))),
+		).
 		All(d.CTX)
 }
 
