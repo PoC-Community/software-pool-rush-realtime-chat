@@ -24,15 +24,20 @@ func stream(c *gin.Context) {
 	listener := roomManager.OpenListener(roomid)
 	defer roomManager.CloseListener(roomid, listener)
 
-	roomManager.Submit(roomid, roomid, "Welcome")
-
 	clientGone := c.Request.Context().Done()
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case <-clientGone:
 			return false
 		case message := <-listener:
-			c.SSEvent("message", gin.H{"message": message})
+			data := message.(*Message)
+
+			c.SSEvent("message", gin.H{
+				"id":       data.Id,
+				"username": data.Username,
+				"content":  data.Content,
+				"roomid":   data.RoomId,
+			})
 			return true
 		}
 	})
@@ -99,9 +104,14 @@ func sendRoom(c *gin.Context) {
 		return
 	}
 
-	controllers.SendMessageToRoom(data.Message, user.ID, roomid)
-	roomManager.Submit(user.ID.String(), roomid.String(), data.Message)
+	message, err := controllers.SendMessageToRoom(data.Message, user.ID, roomid)
 
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	roomManager.Submit(user.Username, message.ID.String(), roomid.String(), data.Message)
 	c.Status(http.StatusOK)
 }
 

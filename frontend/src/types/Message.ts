@@ -1,7 +1,7 @@
 type Message = {
     content: string;
     roomId: string;
-    senderId: string;
+    username: string;
     id: string;
 }
 

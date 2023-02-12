@@ -1,68 +1,75 @@
-import { DeleteIcon } from "@chakra-ui/icons";
-import { Button, HStack, Text, useToast, VStack } from "@chakra-ui/react";
-import { useContext } from "react";
-import AuthContext from "src/context/auth";
+import { ChatIcon, DeleteIcon } from "@chakra-ui/icons";
+import {
+  Button,
+  Card,
+  CardFooter,
+  CardHeader,
+  Flex,
+  Heading,
+  Popover,
+  PopoverArrow,
+  PopoverContent,
+  PopoverTrigger,
+  Portal,
+  Text,
+} from "@chakra-ui/react";
+
 import Room from "src/types/Room";
-import { server } from "src/utils/server";
-import AddRoom from "./AddRoom";
+import { Link } from "react-router-dom";
 
 const RoomList = ({
   rooms,
-  reload,
-  joinRoom
+  onLeave,
 }: {
   rooms: Room[];
-  reload: () => void;
-  joinRoom: (roomId: string) => void;
+  onLeave: (_: string) => void;
 }): JSX.Element => {
-  const toast = useToast();
-  const { auth } = useContext(AuthContext);
-
-  const leaveRoom = async (roomId: string) => {
-    const res = await server.delete("/rooms", {
-      data: { id: roomId },
-      headers: { Authorization: `Bearer ${auth.accessToken}` },
-    });
-
-    toast({
-      title: "Left room.",
-      description: "We've removed you from the room.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-
-    reload();
-  };
-
   return (
-    <VStack w="auto" me="8" spacing="8" alignItems="start">
-      <AddRoom reload={reload} />
-
-      <VStack w="full" justifyContent="space-between" spacing="0">
-        {rooms.length > 0 ? (
-          rooms.map((room) => (
-            <HStack key={room.id} justifyContent="space-between" w="full">
-              <Button w="100%" variant="ghost" justifyContent="start" onClick={() => joinRoom(room.id)}>
+    <Flex w="80vw" justifyContent="center" gap="10" flexWrap="wrap">
+      {rooms.length > 0 ? (
+        rooms.map((room) => (
+          <Card key={room.id}>
+            <CardHeader>
+              <Heading size="md" textAlign="center">
                 {room.name}
+              </Heading>
+            </CardHeader>
+            <CardFooter>
+              <Button as={Link} to={`/rooms/${room.id}`} variant="ghost" mr="2">
+                <ChatIcon mr="2" /> Chat
               </Button>
-              <Button
-                onClick={() => leaveRoom(room.id)}
-                colorScheme="red"
-                ml="4"
-                variant="link"
-                justifyContent="start"
-                w="6"
-              >
-                <DeleteIcon />
-              </Button>
-            </HStack>
-          ))
-        ) : (
-          <Text>No rooms found. Create one!</Text>
-        )}
-      </VStack>
-    </VStack>
+              <Popover>
+                <PopoverTrigger>
+                  <Button colorScheme="red" variant="ghost">
+                    <DeleteIcon mr="2" /> Leave
+                  </Button>
+                </PopoverTrigger>
+                <Portal>
+                  <PopoverContent
+                    w="auto"
+                    px="6"
+                    py="4"
+                    flexDirection="row"
+                    justifyContent="space-around"
+                    alignItems="center"
+                  >
+                    <PopoverArrow />
+                    <Text fontSize="md" mr="4">
+                      Are you sure ?
+                    </Text>
+                    <Button colorScheme="red" onClick={() => onLeave(room.id)}>
+                      Confirm
+                    </Button>
+                  </PopoverContent>
+                </Portal>
+              </Popover>
+            </CardFooter>
+          </Card>
+        ))
+      ) : (
+        <Text fontSize="md">No rooms found. Create one!</Text>
+      )}
+    </Flex>
   );
 };
 export default RoomList;

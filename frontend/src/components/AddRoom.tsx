@@ -44,13 +44,13 @@ const AddRoom = ({ reload }: { reload: () => void }): JSX.Element => {
       if (res.status != 200) return setError("Something went wrong");
 
       toast({
-        title: "Room created.",
-        description: "We've created your room for you.",
+        title: "Room created!",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
 
+      setName("");
       reload();
       onClose();
     } catch (e) {

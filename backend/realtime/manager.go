@@ -1,15 +1,14 @@
 package realtime
 
 import (
-	"fmt"
-
 	"github.com/dustin/go-broadcast"
 )
 
 type Message struct {
-	UserId  string
-	RoomId  string
-	Content string
+	Id       string
+	Username string
+	RoomId   string
+	Content  string
 }
 
 type Listener struct {
@@ -47,7 +46,7 @@ func (m *Manager) run() {
 		case roomid := <-m.delete:
 			m.deleteBroadcast(roomid)
 		case message := <-m.messages:
-			m.room(message.RoomId).Submit(fmt.Sprintf("%v: %v", message.UserId, message.Content))
+			m.room(message.RoomId).Submit(message)
 		}
 	}
 }
@@ -98,11 +97,12 @@ func (m *Manager) DeleteBroadcast(roomid string) {
 	m.delete <- roomid
 }
 
-func (m *Manager) Submit(userid, roomid, content string) {
+func (m *Manager) Submit(username, messageId, roomid, content string) {
 	msg := &Message{
-		UserId:  userid,
-		RoomId:  roomid,
-		Content: content,
+		Id:       messageId,
+		Username: username,
+		RoomId:   roomid,
+		Content:  content,
 	}
 	m.messages <- msg
 }

@@ -11,7 +11,7 @@ const PrivateRoutes = (): JSX.Element => {
 const PublicRoutes = (): JSX.Element => {
   const { auth } = useContext(AuthContext);
 
-  return auth.isAuthed ? <Navigate to="/home" /> : <Outlet />;
+  return auth.isAuthed ? <Navigate to="/" /> : <Outlet />;
 };
 
 export { PrivateRoutes, PublicRoutes };
