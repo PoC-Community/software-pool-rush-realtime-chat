@@ -1,16 +1,16 @@
 import { BrowserRouter, Route, Routes as RouterRoutes } from "react-router-dom";
 
+import { PrivateRoutes, PublicRoutes } from "src/components/RoutesGuards";
+import About from "src/pages/About";
+import Friends from "src/pages/Friends";
+import Home from "src/pages/Home";
+import Profile from "src/pages/Profile";
+import Room from "src/pages/Room";
+import Rooms from "src/pages/Rooms";
+import Layout from "../components/Layout";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Welcome from "../pages/Welcome";
-import Layout from "../components/Layout";
-import Home from "src/pages/Home";
-import { PrivateRoutes, PublicRoutes } from "src/components/RoutesGuards";
-import About from "src/pages/About";
-import Profile from "src/pages/Profile";
-import Rooms from "src/pages/Rooms";
-import Friends from "src/pages/Friends";
-import Room from "src/pages/Room";
 
 const Routes = (): JSX.Element => (
   <BrowserRouter>
