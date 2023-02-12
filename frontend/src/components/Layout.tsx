@@ -15,7 +15,7 @@ const Layout = (): JSX.Element => {
   }
 
   return (
-    <Center pt="10">
+    <Center>
       <Outlet />
     </Center>
   );

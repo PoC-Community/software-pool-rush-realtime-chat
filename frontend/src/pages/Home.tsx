@@ -1,44 +1,86 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Image,
-  Input,
-  Stack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { HStack, VStack } from "@chakra-ui/react";
+import { useContext, useEffect, useState } from "react";
 import Navbar from "src/components/Navbar";
+import RoomList from "src/components/RoomList";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
+import { API_URL } from "src/Config";
+import AuthContext from "src/context/auth";
+import Room from "src/types/Room";
+import { server } from "src/utils/server";
+import Message from "src/types/Message";
+
+type Data = {
+  rooms: Room[];
+};
 
 const Home = (): JSX.Element => {
-  const userId = 1;
-  const messages = [
-    { userId: 1, content: "message1" },
-    { userId: 2, content: "message2" },
-    { userId: 3, content: "message3" },
-    { userId: 1, content: "message4" },
-    { userId: 1, content: "message5" },
-    { userId: 2, content: "message6" },
-    { userId: 2, content: "message7" },
-    { userId: 1, content: "message8" },
-    { userId: 2, content: "message9" },
-    { userId: 3, content: "message10" },
-    { userId: 1, content: "message11" },
-    { userId: 1, content: "message12" },
-    { userId: 2, content: "message13" },
-    { userId: 2, content: "message14" },
-    { userId: 1, content: "message15" },
-    { userId: 2, content: "message16" },
-    { userId: 3, content: "message17" },
-    { userId: 1, content: "message18" },
-    { userId: 1, content: "message19" },
-    { userId: 2, content: "message20" },
-    { userId: 2, content: "message21" },
-  ];
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
+  const { auth } = useContext(AuthContext);
+
+  const fetchRooms = async () => {
+    try {
+      const res = await server.get<Data>("/rooms", {
+        headers: { Authorization: `Bearer ${auth.accessToken}` },
+      });
+
+      if (res.status != 200) return;
+
+      setRooms(res.data.rooms);
+    } catch (e) {}
+  };
+
+  const leaveRoom = async (roomId: string) => {
+
+
+
+  const joinRoom = async (roomId: string) => {
+    if (currentRoom != null) {
+      leaveRoom(currentRoom.id);
+    }
+
+    setCurrentRoom(rooms.find((room) => room.id == roomId) as Room);
+
+    const source = fetchEventSource(`${API_URL}/stream/${roomId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${auth.accessToken}`,
+      },
+      onmessage(event) {
+        console.log(event.data);
+        // const parsedData = JSON.parse(event.data);
+        // setData((data) => [...data, parsedData]);
+      },
+      onclose() {
+        console.log("Connection closed by the server");
+      },
+      onerror(err) {
+        console.log("There was an error from server", err);
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (auth.isAuthed) fetchRooms();
+  }, [auth]);
+
+  useEffect(() => {
+    console.log(currentRoom);
+  }, [currentRoom]);
 
   return (
     <VStack spacing="8">
       <Navbar />
+
+      <HStack w="100%" justifyContent="space-between" px="10">
+        <RoomList
+          rooms={rooms}
+          reload={() => fetchRooms()}
+          joinRoom={joinRoom}
+        />
+        <VStack w="full" spacing="8"></VStack>
+      </HStack>
     </VStack>
   );
 };

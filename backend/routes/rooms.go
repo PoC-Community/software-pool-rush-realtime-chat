@@ -70,7 +70,7 @@ func deleteRoom(c *gin.Context) {
 	}
 
 	data := struct {
-		ID uuid.UUID `json:"id"`
+		ID string `json:"id"`
 	}{}
 
 	if err := c.ShouldBindJSON(&data); err != nil {
@@ -78,12 +78,19 @@ func deleteRoom(c *gin.Context) {
 		return
 	}
 
-	if data.ID == uuid.Nil {
+	if data.ID == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 		return
 	}
 
-	if err := controllers.DeleteRoom(data.ID); err != nil {
+	roomId, err := uuid.Parse(data.ID)
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	if err := controllers.RemoveUser(user.ID, roomId); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}

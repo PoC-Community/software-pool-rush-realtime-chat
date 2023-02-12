@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 
 const Welcome = (): JSX.Element => (
-  <VStack spacing="12">
+  <VStack spacing="12" minH="100vh" justifyContent="center">
     <Image src="assets/logo.png" alt="Logo-Katsapp" w="80" />
     <Text fontSize="2xl" color="orange.400" as="b">
       Join Katsapp to chat with your friends all around the world !
@@ -41,7 +41,8 @@ const Welcome = (): JSX.Element => (
     </VStack>
     <Button
       as={Link}
-      to={"/aboutus"}
+      to={"/about"}
+      top="10"
       variant="link"
       fontSize="md"
       color="orange.500"

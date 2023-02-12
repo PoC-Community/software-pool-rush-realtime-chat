@@ -6,11 +6,15 @@ import {
   FormLabel,
   Input,
   VStack,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect } from "react";
 import { useContext, useReducer, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import AuthContext from "src/context/auth";
 import Auth from "src/types/Auth";
 import ServerError from "src/types/ServerError";
@@ -28,8 +32,9 @@ const Register = (): JSX.Element => {
     { username: "", email: "", password: "" }
   );
   const [error, setError] = useState("");
-  const { auth, setAuth } = useContext(AuthContext);
+  const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const submit = async () => {
     if (!data.username || !data.email || !data.password) {
@@ -42,6 +47,13 @@ const Register = (): JSX.Element => {
       if (res.data.accessToken && res.data.user) {
         setAuth({ ...res.data, isAuthed: true });
         navigate("/home");
+        toast({
+          title: "Register !",
+          description: "We've created an account for you <3",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       }
     } catch (e) {
       if (axios.isAxiosError(e)) {
@@ -52,12 +64,8 @@ const Register = (): JSX.Element => {
     }
   };
 
-  useEffect(() => {
-    if (auth.isAuthed) navigate("/home");
-  }, [auth]);
-
   return (
-    <VStack spacing="8">
+    <VStack spacing="8" minH="100vh" justifyContent="center">
       <Image boxSize="60" src="assets/logo.png" alt="Logo-Katsapp" />
 
       <Text fontSize="3xl" color="orange.400" fontWeight="bold">
@@ -69,6 +77,7 @@ const Register = (): JSX.Element => {
           <FormLabel color="green.700">Email address</FormLabel>
           <Input
             placeholder="Email"
+            type="text"
             value={data.email}
             onChange={(e) => setData({ email: e.target.value })}
           />
@@ -94,9 +103,10 @@ const Register = (): JSX.Element => {
       </VStack>
 
       {error && (
-        <Text fontWeight="bold" color="red.500">
-          {error}
-        </Text>
+        <Alert status="error" rounded="md" w="auto">
+          <AlertIcon />
+          <AlertTitle>{error}</AlertTitle>
+        </Alert>
       )}
 
       <Button onClick={submit} colorScheme="orange" size="lg">

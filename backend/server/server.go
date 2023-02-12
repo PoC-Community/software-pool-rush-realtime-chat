@@ -15,9 +15,12 @@ func NewServer() *Server {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"*"},
-		AllowMethods: []string{"POST", "GET", "DELETE", "PUT", "PATCH"},
-		AllowHeaders: []string{"*"},
+		AllowMethods:           []string{"*"},
+		AllowHeaders:           []string{"*"},
+		AllowAllOrigins:        true,
+		AllowCredentials:       true,
+		AllowWildcard:          true,
+		AllowBrowserExtensions: true,
 	}))
 
 	return &Server{

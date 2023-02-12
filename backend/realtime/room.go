@@ -24,13 +24,15 @@ func stream(c *gin.Context) {
 	listener := roomManager.OpenListener(roomid)
 	defer roomManager.CloseListener(roomid, listener)
 
+	roomManager.Submit(roomid, roomid, "Welcome")
+
 	clientGone := c.Request.Context().Done()
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case <-clientGone:
 			return false
 		case message := <-listener:
-			c.SSEvent("message", message)
+			c.SSEvent("message", gin.H{"message": message})
 			return true
 		}
 	})

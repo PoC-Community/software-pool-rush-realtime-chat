@@ -48,3 +48,10 @@ func (d Database) GetRoomsFromUser(userId uuid.UUID) ([]*ent.Room, error) {
 		Where(room.HasUsersWith(user.ID(userId))).
 		All(d.CTX)
 }
+
+func (d Database) RemoveUserFromRoom(userId, roomId uuid.UUID) (*ent.Room, error) {
+	return d.Client.Room.
+		UpdateOneID(roomId).
+		RemoveUserIDs(userId).
+		Save(d.CTX)
+}

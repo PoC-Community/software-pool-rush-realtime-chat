@@ -6,6 +6,10 @@ import {
   VStack,
   Text,
   Image,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useContext, useReducer, useState } from "react";
@@ -29,6 +33,7 @@ const Login = (): JSX.Element => {
   const [error, setError] = useState("");
   const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const submit = async () => {
     if (!data.login || !data.password) {
@@ -41,6 +46,13 @@ const Login = (): JSX.Element => {
       if (res.data.accessToken && res.data.user) {
         setAuth({ ...res.data, isAuthed: true });
         navigate("/home");
+        toast({
+          title: "Logged in.",
+          description: "We've logged you in <3",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       }
     } catch (e) {
       if (axios.isAxiosError(e)) {
@@ -52,8 +64,9 @@ const Login = (): JSX.Element => {
   };
 
   return (
-    <VStack spacing="8">
+    <VStack spacing="8" minH="100vh" justifyContent="center">
       <Image w="60" src="assets/logo.png" alt="Logo-Katsapp" />
+
       <Text fontSize="3xl" color="orange.400" fontWeight="bold">
         So happy to see you again :D
       </Text>
@@ -64,6 +77,7 @@ const Login = (): JSX.Element => {
           <Input
             placeholder="Email/username"
             value={data.login}
+            type="text"
             onChange={(e) => setData({ login: e.target.value })}
           />
         </FormControl>
@@ -72,15 +86,17 @@ const Login = (): JSX.Element => {
           <Input
             placeholder="Password"
             value={data.password}
+            type="password"
             onChange={(e) => setData({ password: e.target.value })}
           />
         </FormControl>
       </VStack>
 
       {error && (
-        <Text fontWeight="bold" color="red.500">
-          {error}
-        </Text>
+        <Alert status="error" rounded='md' w='auto'>
+          <AlertIcon />
+          <AlertTitle>{error}</AlertTitle>
+        </Alert>
       )}
 
       <Button onClick={submit} colorScheme="orange" size="lg">

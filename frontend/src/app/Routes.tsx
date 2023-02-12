@@ -6,6 +6,7 @@ import Welcome from "../pages/Welcome";
 import Layout from "../components/Layout";
 import Home from "src/pages/Home";
 import { PrivateRoutes, PublicRoutes } from "src/components/RoutesGuards";
+import About from "src/pages/About";
 
 const Routes = (): JSX.Element => (
   <BrowserRouter>
@@ -17,6 +18,7 @@ const Routes = (): JSX.Element => (
 
         <Route element={<PublicRoutes />}>
           <Route element={<Welcome />} path="/" />
+          <Route element={<About />} path="/about" />
           <Route element={<Register />} path="/register" />
           <Route element={<Login />} path="/login" />
         </Route>

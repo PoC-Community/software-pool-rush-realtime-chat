@@ -20,7 +20,12 @@ const Auth = ({ children }: { children: JSX.Element }): JSX.Element => {
       const res = await server.get<Partial<AuthType>>("/auth/user", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setAuth({ ...res.data, isAuthed: true, isLoading: false });
+      setAuth({
+        ...res.data,
+        accessToken: token,
+        isAuthed: true,
+        isLoading: false,
+      });
     } catch (e) {
       setAuth({
         accessToken: "",
@@ -34,9 +39,8 @@ const Auth = ({ children }: { children: JSX.Element }): JSX.Element => {
   useEffect(() => {
     let token = localStorage.getItem("accessToken") ?? "";
 
-    if (token.length > 0) {
-      fetchAuth(token);
-    }
+    if (token.length > 0) fetchAuth(token);
+    else setAuth({ isLoading: false });
   }, []);
 
   return (
