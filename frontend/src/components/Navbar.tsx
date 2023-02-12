@@ -1,4 +1,4 @@
-import { Button, HStack, Text } from "@chakra-ui/react";
+import { Button, HStack, Text, Image } from "@chakra-ui/react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "src/context/auth";
@@ -23,9 +23,12 @@ const Navbar = (): JSX.Element => {
       justifyContent="space-between"
       bgColor="green.50"
     >
-      <Text as={Link} to='/rooms' fontSize="2xl" color="green.600" fontWeight="bold">
+      <HStack>
+      <Image src="assets/logo.png" alt="Logo-Katsapp" w="10" />
+      <Text as={Link} to='/rooms' fontSize="2xl" color="green.500" fontWeight="bold">
         KatsApp
       </Text>
+      </HStack>
 
       <HStack>
         <Button

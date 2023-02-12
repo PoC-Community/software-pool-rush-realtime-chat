@@ -31,6 +31,7 @@ const Welcome = (): JSX.Element => (
         Register
       </Button>
     </VStack>
+    <HStack>
     <Button
       as={Link}
       to={"/about"}
@@ -39,8 +40,20 @@ const Welcome = (): JSX.Element => (
       fontSize="md"
       color="orange.500"
     >
-      About us
+      About us |
     </Button>
+    <Button
+      as={Link}
+      to={"/contact"}
+      top="10"
+      variant="link"
+      fontSize="md"
+      color="orange.500"
+    >
+      Contact
+    </Button>
+
+    </HStack>
   </VStack>
 );
 

@@ -53,6 +53,7 @@ const Profile = () => {
             w="full"
             value={name}
             type="text"
+            autoFocus
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") saveUser();
@@ -60,7 +61,7 @@ const Profile = () => {
           />
         </FormControl>
 
-        <Button onClick={() => saveUser()} colorScheme="orange">
+        <Button onClick={() => saveUser()} colorScheme="orange" borderRadius="full" borderWidth="medium" borderColor="orange.700">
           Save changes
         </Button>
       </VStack>

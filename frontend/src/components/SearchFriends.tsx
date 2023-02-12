@@ -58,6 +58,7 @@ const SearchFriends = ({ onAdd }: { onAdd: () => void }): JSX.Element => {
             w="full"
             value={search}
             type="text"
+            autoFocus
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => {
               if (e.key == "Enter") searchUser();

@@ -11,6 +11,7 @@ import Layout from "../components/Layout";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Welcome from "../pages/Welcome";
+import Contact from "src/pages/Contact";
 
 const Routes = (): JSX.Element => (
   <BrowserRouter>
@@ -19,6 +20,7 @@ const Routes = (): JSX.Element => (
         <Route element={<PublicRoutes />}>
           <Route element={<Welcome />} path="/" />
           <Route element={<About />} path="/about" />
+          <Route element={<Contact />} path="/contact" />
           <Route element={<Register />} path="/register" />
           <Route element={<Login />} path="/login" />
         </Route>

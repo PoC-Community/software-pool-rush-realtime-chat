@@ -31,6 +31,7 @@ const MessageInput = ({ roomId }: { roomId: string }): JSX.Element => {
           w="full"
           value={message}
           type="text"
+          autoFocus
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") sendMessage();
