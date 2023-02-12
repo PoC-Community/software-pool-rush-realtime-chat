@@ -1,4 +1,5 @@
 import { VStack, Text, Image } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const About = (): JSX.Element => (
   <VStack spacing="14" pt="10">
@@ -6,7 +7,9 @@ const About = (): JSX.Element => (
       Why KatsApp ?
     </Text>
 
-    <Image w="56" src="assets/logo.png" alt="Logo-Katsapp" />
+    <Link to='/'>
+      <Image w="56" src="assets/logo.png" alt="Logo-Katsapp" />
+    </Link>
 
     <Text fontSize="xl" color="green.600" w="96">
       Katsapp is a chat application that allows you to chat with your friends
