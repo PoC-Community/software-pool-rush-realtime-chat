@@ -1,4 +1,4 @@
-import { Button, Image, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const Welcome = (): JSX.Element => (
@@ -32,27 +32,26 @@ const Welcome = (): JSX.Element => (
       </Button>
     </VStack>
     <HStack>
-    <Button
-      as={Link}
-      to={"/about"}
-      top="10"
-      variant="link"
-      fontSize="md"
-      color="orange.500"
-    >
-      About us |
-    </Button>
-    <Button
-      as={Link}
-      to={"/contact"}
-      top="10"
-      variant="link"
-      fontSize="md"
-      color="orange.500"
-    >
-      Contact
-    </Button>
-
+      <Button
+        as={Link}
+        to={"/about"}
+        top="10"
+        variant="link"
+        fontSize="md"
+        color="orange.500"
+      >
+        About us |
+      </Button>
+      <Button
+        as={Link}
+        to={"/contact"}
+        top="10"
+        variant="link"
+        fontSize="md"
+        color="orange.500"
+      >
+        Contact
+      </Button>
     </HStack>
   </VStack>
 );
