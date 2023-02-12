@@ -75,7 +75,7 @@ func UpdateUser(id uuid.UUID, username string) (*ent.User, error) {
 		return nil, errors.New("Username is too short (minimum is 6 characters)")
 	}
 
-	if user, err := database.DB.GetUserByUsername(username); err != nil || user != nil {
+	if user, err := database.DB.GetUserByUsername(username); err == nil || user != nil {
 		return nil, errors.New("Username already exists")
 	}
 

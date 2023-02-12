@@ -1,8 +1,8 @@
 package routes
 
 import (
+	"fmt"
 	"katsapp_backend/controllers"
-	"katsapp_backend/ent"
 	"katsapp_backend/middlewares"
 	"net/http"
 
@@ -10,27 +10,31 @@ import (
 )
 
 func updateUser(c *gin.Context) {
-	temp, ok := c.Get("user")
+	user := middlewares.GetUser(c)
 
-	if !ok {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+	if user == nil {
 		return
 	}
-	user := temp.(*ent.User)
 
 	data := struct {
 		NewUsername string `json:"newUsername"`
 	}{}
+
+	fmt.Println("data", data)
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 		return
 	}
 
+	fmt.Println("data", data)
+
 	if data.NewUsername == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 		return
 	}
+
+	fmt.Println("data", data)
 
 	user, err := controllers.UpdateUser(user.ID, data.NewUsername)
 
@@ -38,6 +42,7 @@ func updateUser(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
+	fmt.Println("data", data)
 
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
