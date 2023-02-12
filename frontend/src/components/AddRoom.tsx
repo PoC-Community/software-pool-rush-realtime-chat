@@ -63,7 +63,7 @@ const AddRoom = ({ reload }: { reload: () => void }): JSX.Element => {
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme="orange" variant="outline">
+      <Button onClick={onOpen} colorScheme="orange" variant="outline" borderRadius="full" borderWidth="medium">
         Create Room
       </Button>
 
@@ -79,6 +79,7 @@ const AddRoom = ({ reload }: { reload: () => void }): JSX.Element => {
                 placeholder="Room name"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
+                autoFocus
               />
             </FormControl>
           </ModalBody>
