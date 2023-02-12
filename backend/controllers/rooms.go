@@ -18,6 +18,10 @@ func DeleteRoom(id uuid.UUID) error {
 func RemoveUser(userId, roomId uuid.UUID) error {
 	room, err := database.DB.RemoveUserFromRoom(userId, roomId)
 
+	if err != nil {
+		return err
+	}
+
 	if room.QueryUsers().CountX(database.DB.CTX) == 0 {
 		err = DeleteRoom(room.ID)
 	}

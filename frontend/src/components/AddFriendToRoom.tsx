@@ -7,12 +7,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  FormControl,
-  FormLabel,
-  Input,
-  Alert,
-  AlertIcon,
-  ModalFooter,
   useDisclosure,
   HStack,
   Text,
@@ -26,7 +20,13 @@ import Room from "src/types/Room";
 import User from "src/types/User";
 import { server } from "src/utils/server";
 
-const AddFriendToRoom = ({ room }: { room: Room }): JSX.Element => {
+const AddFriendToRoom = ({
+  room,
+  onAdd,
+}: {
+  room: Room;
+  onAdd: () => void;
+}): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { auth } = useContext(AuthContext);
   const [friends, setFriends] = useState<User[]>([]);
@@ -38,7 +38,6 @@ const AddFriendToRoom = ({ room }: { room: Room }): JSX.Element => {
       })
       .then((res) => {
         if (res.status != 200) return;
-        console.log(res.data);
         setFriends(res.data.friends);
       });
   };
@@ -46,15 +45,17 @@ const AddFriendToRoom = ({ room }: { room: Room }): JSX.Element => {
   const addFriend = async (friendId: string) => {
     server
       .put(
-        `/rooms/${room.id}`,
+        `/room/${room.id}`,
         { friendId },
         { headers: { Authorization: `Bearer ${auth.accessToken}` } }
       )
       .then((res) => {
         if (res.status != 200) return;
         onClose();
+        onAdd();
         setFriends([]);
-      });
+      })
+      .catch((e) => console.log(e));
   };
 
   useEffect(() => {
@@ -75,29 +76,31 @@ const AddFriendToRoom = ({ room }: { room: Room }): JSX.Element => {
           <ModalBody pb={6}>
             <VStack spacing="4">
               {friends.length > 0 &&
-                friends.map((friend) => {
-                  return (
-                    <HStack
-                      w="80"
-                      key={friend.id}
-                      py="3"
-                      px="4"
-                      rounded="xl"
-                      spacing="5"
-                      bgColor="orange.50"
-                      justifyContent="space-between"
-                    >
-                      <Text>{friend.username}</Text>
-                      <Button
-                        onClick={() => addFriend(friend.id)}
-                        colorScheme="orange"
-                        variant="ghost"
+                friends
+                  .filter((f) => !room.edges.users.find((u) => u.id == f.id))
+                  .map((friend) => {
+                    return (
+                      <HStack
+                        w="80"
+                        key={friend.id}
+                        py="3"
+                        px="4"
+                        rounded="xl"
+                        spacing="5"
+                        bgColor="orange.50"
+                        justifyContent="space-between"
                       >
-                        <PlusSquareIcon /> Add
-                      </Button>
-                    </HStack>
-                  );
-                })}
+                        <Text>{friend.username}</Text>
+                        <Button
+                          onClick={() => addFriend(friend.id)}
+                          colorScheme="orange"
+                          variant="ghost"
+                        >
+                          <PlusSquareIcon /> Add
+                        </Button>
+                      </HStack>
+                    );
+                  })}
             </VStack>
           </ModalBody>
         </ModalContent>

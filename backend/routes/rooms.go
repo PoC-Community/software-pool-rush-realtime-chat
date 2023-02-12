@@ -102,6 +102,4 @@ func ApplyRooms(r *gin.Engine) {
 	r.GET("/rooms", middlewares.AuthRequired(), getRooms)
 	r.POST("/rooms", middlewares.AuthRequired(), createRoom)
 	r.DELETE("/rooms", middlewares.AuthRequired(), deleteRoom)
-	// r.GET("/rooms/:id", middlewares.AuthRequired(), room)
-	// r.POST("/rooms/:id", middlewares.AuthRequired(), joinRoom)
 }

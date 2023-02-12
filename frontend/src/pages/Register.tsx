@@ -46,7 +46,7 @@ const Register = (): JSX.Element => {
 
       if (res.data.accessToken && res.data.user) {
         setAuth({ ...res.data, isAuthed: true });
-        navigate("/");
+        navigate("/rooms");
         toast({
           title: "Registered !",
           status: "success",

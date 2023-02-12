@@ -28,8 +28,6 @@ const Room = (): JSX.Element => {
       signal: ctrlRef.current.signal,
       onmessage(event) {
         const message = JSON.parse(event.data) as Message;
-        console.log(message);
-
         setMessages((messages) => [...messages, message]);
       },
       onerror() {

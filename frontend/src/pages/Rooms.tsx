@@ -21,7 +21,6 @@ const Rooms = (): JSX.Element => {
       })
       .then((res) => {
         if (res.status != 200) return;
-        console.log(res.data)
         setRooms(res.data.rooms);
       })
       .catch(() => {});
@@ -46,7 +45,7 @@ const Rooms = (): JSX.Element => {
     <VStack spacing="10">
       <AddRoom reload={() => fetchRooms()} />
 
-      <RoomList rooms={rooms} onLeave={(id) => leaveRoom(id)} />
+      <RoomList rooms={rooms} reload={() => fetchRooms()} onLeave={(id) => leaveRoom(id)} />
     </VStack>
   );
 };

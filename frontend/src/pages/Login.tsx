@@ -45,7 +45,7 @@ const Login = (): JSX.Element => {
 
       if (res.data.accessToken && res.data.user) {
         setAuth({ ...res.data, isAuthed: true });
-        navigate("/");
+        navigate("/rooms");
         toast({
           title: "Logged in !",
           status: "success",

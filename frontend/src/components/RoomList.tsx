@@ -1,7 +1,9 @@
 import { ChatIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
+  Avatar,
   Button,
   Card,
+  CardBody,
   CardFooter,
   CardHeader,
   Flex,
@@ -21,9 +23,11 @@ import AddFriendToRoom from "./AddFriendToRoom";
 const RoomList = ({
   rooms,
   onLeave,
+  reload,
 }: {
   rooms: Room[];
   onLeave: (_: string) => void;
+  reload: () => void;
 }): JSX.Element => {
   return (
     <Flex w="80vw" justifyContent="center" gap="10" flexWrap="wrap">
@@ -35,11 +39,24 @@ const RoomList = ({
                 {room.name}
               </Heading>
             </CardHeader>
+            <CardBody>
+              {room.edges.users.map((user) => (
+                <Avatar
+                  key={user.id}
+                  name={user.username}
+                  size="md"
+                  mr="2"
+                  title={user.username}
+                />
+              ))}
+            </CardBody>
             <CardFooter>
               <Button as={Link} to={`/rooms/${room.id}`} variant="ghost">
                 <ChatIcon mr="2" /> Chat
               </Button>
-              <AddFriendToRoom room={room} />
+
+              <AddFriendToRoom room={room} onAdd={() => reload()} />
+
               <Popover>
                 <PopoverTrigger>
                   <Button colorScheme="red" variant="ghost">

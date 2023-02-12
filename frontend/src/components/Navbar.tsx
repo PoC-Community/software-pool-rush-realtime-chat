@@ -10,7 +10,7 @@ const Navbar = (): JSX.Element => {
   const logout = () => {
     localStorage.removeItem("accessToken");
     setAuth({ isAuthed: false, user: null, accessToken: "" });
-    navigate("/");
+    navigate("/rooms");
   };
 
   return (
