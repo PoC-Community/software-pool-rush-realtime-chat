@@ -1,4 +1,4 @@
-import { Button, HStack, Text } from "@chakra-ui/react";
+import { Button, HStack, Text, Icon, Image } from "@chakra-ui/react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "src/context/auth";
@@ -61,6 +61,7 @@ const Navbar = (): JSX.Element => {
         </Button>
         <Button colorScheme="red" variant="ghost" onClick={logout}>
           Logout
+        <Image padding='2' src="./assets/log-out-outline.svg" h='99%'></Image>
         </Button>
       </HStack>
     </HStack>
