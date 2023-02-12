@@ -26,7 +26,7 @@ const Routes = (): JSX.Element => (
         <Route element={<PrivateRoutes />}>
           <Route element={<Home />}>
             <Route path="/rooms" element={<Rooms />} />
-            <Route path="/rooms/:id" element={<Room />} />
+            <Route path="/rooms/:id/:name" element={<Room />} />
             <Route path="/friends" element={<Friends />} />
             <Route path="/profile" element={<Profile />} />
           </Route>

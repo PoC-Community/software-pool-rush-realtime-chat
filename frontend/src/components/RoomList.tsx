@@ -51,7 +51,7 @@ const RoomList = ({
               ))}
             </CardBody>
             <CardFooter>
-              <Button as={Link} to={`/rooms/${room.id}`} variant="ghost">
+              <Button as={Link} to={`/rooms/${room.id}/${room.name}`} variant="ghost">
                 <ChatIcon mr="2" /> Chat
               </Button>
 

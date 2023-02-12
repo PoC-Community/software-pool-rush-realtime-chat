@@ -1,4 +1,4 @@
-import { Spinner, VStack } from "@chakra-ui/react";
+import { Spinner, Text,  VStack } from "@chakra-ui/react";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,7 +11,7 @@ import Message from "src/types/Message";
 import { server } from "src/utils/server";
 
 const Room = (): JSX.Element => {
-  const roomId = useParams<{ id: string }>().id;
+  const room = useParams<{ id: string, name: string }>();
   const ctrlRef = useRef<AbortController>();
   const [messages, setMessages] = useState<Message[]>([]);
   const { auth } = useContext(AuthContext);
@@ -22,7 +22,7 @@ const Room = (): JSX.Element => {
 
     ctrlRef.current = new AbortController();
 
-    fetchEventSource(`${API_URL}/stream/${roomId}`, {
+    fetchEventSource(`${API_URL}/stream/${room.id}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${auth.accessToken}` },
       signal: ctrlRef.current.signal,
@@ -50,25 +50,29 @@ const Room = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!roomId) return;
+    if (!room.id) return;
 
-    joinRoom(roomId);
+    joinRoom(room.id);
 
-    loadMessages(roomId);
+    loadMessages(room.id);
 
     return () => {
       if (ctrlRef.current) ctrlRef.current.abort();
     };
-  }, [roomId]);
+  }, [room]);
 
-  if (!roomId || !auth.user)
+  if (!room.id || !auth.user)
     return <Spinner color="orange.500" w="40" h="40" />;
 
   return (
-    <VStack spacing="10">
+    <VStack spacing="6">
+      <Text fontSize='2xl'>
+        {room.name}
+      </Text>
+
       <MessageList messages={messages} user_id={auth.user?.id} />
 
-      <MessageInput roomId={roomId} />
+      <MessageInput roomId={room.id} />
     </VStack>
   );
 };
