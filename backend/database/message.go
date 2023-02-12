@@ -56,9 +56,10 @@ func (d Database) GetMessageFromRoomWithRange(roomId uuid.UUID, start, end int) 
 	return d.Client.Message.
 		Query().
 		Where(message.HasRoomWith(room.ID(roomId))).
-		Order(ent.Asc(message.FieldCreatedAt)).
+		WithUser().
+		Order(ent.Desc(message.FieldCreatedAt)).
 		Offset(start).
 		Limit(end - start).
-		WithUser().
+		Order(ent.Asc(message.FieldCreatedAt)).
 		All(d.CTX)
 }
