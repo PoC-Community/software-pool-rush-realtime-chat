@@ -13,9 +13,8 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import MessageType from "src/types/Message";
 
 const isLink = (text: string) => {
@@ -96,39 +95,66 @@ const MessageList = ({
 
       <AlertExternalLink url={url} isOpen={isOpen} onClose={onClose} />
 
-      {messages.length > 0 &&
-        messages.map((message) => (
-          <HStack
-            maxW="96"
-            alignSelf={message.user_id == user_id ? "flex-end" : "flex-start"}
-            key={message.id}
-            py="3"
-            px="4"
-            rounded="xl"
-            bgColor="orange.50"
-          >
-            {message.user_id != user_id && (
-              <Avatar mr="4" name={message.edges.user.username} />
-            )}
-            {isLink(message.content) ? (
-              <Text
-                fontSize="lg"
-                colorScheme="blue"
-                variant="link"
-                whiteSpace={'normal'}
-                _hover={{ textDecoration: "underline", cursor: "pointer" }}
-                onClick={() => {
-                  setUrl(message.content);
-                  onOpen();
-                }}
-              >
-                {message.content}
-              </Text>
-            ) : (
-              <Text fontSize="lg">{message.content}</Text>
-            )}
-          </HStack>
-        ))}
+      <VStack spacing="6" w="full" pr="6">
+        {messages.length > 0 &&
+          messages.map((message) => (
+            <VStack
+              key={message.id}
+              alignSelf={message.user_id == user_id ? "flex-end" : "flex-start"}
+              alignItems={
+                message.user_id == user_id ? "flex-end" : "flex-start"
+              }
+            >
+              {message.user_id != user_id && (
+                <HStack>
+                  <Avatar size="sm" name={message.edges.user.username} />
+                  <Text fontSize="sm" color="gray.500">
+                    {message.edges.user.username}
+                  </Text>
+                </HStack>
+              )}
+
+              <HStack maxW="96" py="3" px="4" rounded="xl" bgColor="orange.50">
+                {isLink(message.content) ? (
+                  <Link
+                    fontSize="lg"
+                    color="blue.600"
+                    variant="link"
+                    wordBreak="break-all"
+                    onClick={() => {
+                      setUrl(message.content);
+                      onOpen();
+                    }}
+                  >
+                    {message.content}
+                  </Link>
+                ) : (
+                  <Text fontSize="lg" wordBreak="break-all">
+                    {message.content}
+                  </Text>
+                )}
+              </HStack>
+
+              <HStack>
+                <Text fontSize="xs" color="gray.500">
+                  {new Date(message.created_at).toLocaleString()}
+                </Text>
+
+                {message.user_id == user_id && (
+                  <Button
+                    colorScheme="black"
+                    variant="link"
+                    size="sm"
+                    onClick={() => console.log("1")}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </HStack>
+            </VStack>
+          ))}
+      </VStack>
+
       <div ref={scrollRef} style={{ visibility: "hidden" }} />
     </VStack>
   );
