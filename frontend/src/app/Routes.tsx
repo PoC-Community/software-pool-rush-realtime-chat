@@ -16,20 +16,20 @@ const Routes = (): JSX.Element => (
   <BrowserRouter>
     <RouterRoutes>
       <Route element={<Layout />}>
-        <Route element={<PrivateRoutes />}>
-          <Route element={<Home />} path="/">
-            <Route path="/rooms" element={<Rooms />} />
-            <Route path="/rooms/:id" element={<Room />} />
-            <Route path="/friends" element={<Friends />} />
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-        </Route>
-
         <Route element={<PublicRoutes />}>
           <Route element={<Welcome />} path="/" />
           <Route element={<About />} path="/about" />
           <Route element={<Register />} path="/register" />
           <Route element={<Login />} path="/login" />
+        </Route>
+
+        <Route element={<PrivateRoutes />}>
+          <Route element={<Home />}>
+            <Route path="/rooms" element={<Rooms />} />
+            <Route path="/rooms/:id" element={<Room />} />
+            <Route path="/friends" element={<Friends />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
         </Route>
       </Route>
     </RouterRoutes>
